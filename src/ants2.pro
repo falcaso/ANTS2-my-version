@@ -10,9 +10,9 @@ ANTS2_MINOR = 33
 #CONFIG += ants2_fann        #enables FANN (fast neural network) library: see https://github.com/libfann/fann
 CONFIG += ants2_eigen3      #use Eigen3 library instead of ROOT for linear algebra - highly recommended! Installation requires only to copy files!
 #CONFIG += ants2_RootServer  #enable cern CERN ROOT html server
-#CONFIG += ants2_Python      #enable Python scripting
+CONFIG += ants2_Python      #enable Python scripting
 #CONFIG += ants2_NCrystal    #enable NCrystal library (neutron scattering): see https://github.com/mctools/ncrystal
-#CONFIG += ants2_jsroot       #enables JSROOT visualisation at GeometryWindow. Automatically enables ants2_RootServer
+CONFIG += ants2_jsroot       #enables JSROOT visualisation at GeometryWindow. Automatically enables ants2_RootServer
 
 #In effect ONLY for the Docker version:
 ants2_docker {
@@ -26,8 +26,8 @@ ants2_docker {
 
 #---CERN ROOT---
 linux-g++ || unix {
-     INCLUDEPATH += $$system(root-config --incdir)
-     LIBS += $$system(root-config --libs) -lGeom -lGeomPainter -lGeomBuilder -lMinuit2 -lSpectrum -ltbb
+     INCLUDEPATH += $$system(/usr/local/root/bin/root-config --incdir)
+     LIBS += $$system(/usr/local/root/bin/root-config --libs) -lGeom -lGeomPainter -lGeomBuilder -lMinuit2 -lSpectrum -ltbb
      ants2_RootServer {LIBS += -lRHTTP  -lXMLIO}
 }
 win32 {
@@ -194,8 +194,8 @@ ants2_Python{
                 INCLUDEPATH += /usr/include/PythonQt5/
                 LIBS += -lPythonQt-Qt5-Python3.6
             } else {
-                LIBS += $$system(python3-config --libs)
-                QMAKE_CXXFLAGS += $$system(python3-config --includes)
+                LIBS += $$system(python3.6-config --libs)
+                QMAKE_CXXFLAGS += $$system(python3.6-config --includes)
 
                 INCLUDEPATH += /usr/include/PythonQt5/
                 LIBS += -lPythonQt-Qt5-Python3.6
