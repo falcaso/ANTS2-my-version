@@ -1306,7 +1306,7 @@ void AGeoObject::enforceUniqueNameForCloneRecursive(AGeoObject * World, AGeoObje
 
 void AGeoObject::addSuffixToNameRecursive(const QString & suffix)
 {
-    const QString newName = Name + "_at_" + suffix;
+    const QString newName = Name + "@" + suffix;
 
     if (Container && Container->ObjectType->isStack())
     {
@@ -1503,13 +1503,6 @@ QString AGeoObject::GenerateRandomObjectName()
   QString str = randomString(2, 1);
   str = "New_" + str;
   return str;
-}
-
-QString AGeoObject::GenerateRandomPrototypeName()
-{
-    QString str = randomString(2, 1);
-    str = "Prototype_" + str;
-    return str;
 }
 
 QString AGeoObject::GenerateRandomLightguideName()

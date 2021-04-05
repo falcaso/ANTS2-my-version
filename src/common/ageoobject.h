@@ -163,7 +163,6 @@ private:
 public:
   static QString GenerateRandomName();
   static QString GenerateRandomObjectName();
-  static QString GenerateRandomPrototypeName();
   static QString GenerateRandomLightguideName();
   static QString GenerateRandomCompositeName();
   static QString GenerateRandomArrayName();

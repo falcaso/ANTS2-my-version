@@ -88,8 +88,6 @@ public:
     inline double SizeZ(int ipm) const   {return PMtypes.at(PMs.at(ipm).type)->SizeZ;}
     inline bool   isSiPM(int ipm) const  {return PMtypes.at(PMs.at(ipm).type)->SiPM;}
 
-    double        getXYMinimumSize(int ipm) const;
-
     //PDE
     bool   isPDEwaveOverriden(int ipm) const;
     bool   isPDEwaveOverriden() const;

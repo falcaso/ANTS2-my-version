@@ -33,8 +33,6 @@ public:
     void     SetXDivisions(int numDiv);
     void     SetYDivisions(int numDiv);
 
-    void     AddPoint2D(double x, double y, double z);
-
     const QVector<QPair<double, double> > GetPoints();
     void     Save(const QString& fileName);
 

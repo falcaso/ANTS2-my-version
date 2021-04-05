@@ -1,3 +1,4 @@
+//ANTS2
 #include "outputwindow.h"
 #include "ui_outputwindow.h"
 #include "mainwindow.h"
@@ -21,12 +22,14 @@
 #include "detectoraddonswindow.h"
 #include "ajsontools.h"
 
+//ROOT
 #include "TGraph2D.h"
 #include "TH2C.h"
 #include "TH1D.h"
 #include "TMath.h"
 #include "TH1.h"
 
+//Qt
 #include <QDebug>
 #include <QGraphicsItem>
 #include <QString>
@@ -482,7 +485,7 @@ void OutputWindow::RefreshData()
   updateSignalLabels(MaxSignal);
   addPMitems( (fHaveData ? &EventsDataHub->Events.at(CurrentEvent) : 0), MaxSignal, Passives); //add icons with PMs to the scene
   if (ui->cbShowPMsignals->isChecked())
-    addTextItems( (fHaveData ? &EventsDataHub->Events.at(CurrentEvent) : 0), MaxSignal, Passives); //add icons with signal text to the scene
+    addTextitems( (fHaveData ? &EventsDataHub->Events.at(CurrentEvent) : 0), MaxSignal, Passives); //add icons with signal text to the scene
   updateSignalScale();
 
   //Monitors
@@ -545,8 +548,7 @@ void OutputWindow::addPMitems(const QVector<float> *vector, float MaxSignal, Dyn
     {
       //pen
       QPen pen(Qt::black);
-      //int size = 6.0 * std::min(MW->PMs->SizeX(ipm), MW->PMs->SizeY(ipm)) / 30.0;
-      int size = 6.0 * MW->PMs->getXYMinimumSize(ipm) / 30.0;
+      int size = 6.0 * std::min(MW->PMs->SizeX(ipm), MW->PMs->SizeY(ipm)) / 30.0;
       pen.setWidth(size);
 
       //brush
@@ -614,15 +616,13 @@ void OutputWindow::addPMitems(const QVector<float> *vector, float MaxSignal, Dyn
     }
 }
 
-void OutputWindow::addTextItems(const QVector<float> *vector, float MaxSignal, DynamicPassivesHandler *Passives)
+void OutputWindow::addTextitems(const QVector<float> *vector, float MaxSignal, DynamicPassivesHandler *Passives)
 {
     const int prec = ui->sbDecimalPrecision->value();
-    for (int ipm=0; ipm<MW->PMs->count(); ipm++)
+  for (int ipm=0; ipm<MW->PMs->count(); ipm++)
     {
       const APm &PM = MW->PMs->at(ipm);
-
-      //double size = 0.5*MW->PMs->getType( PM.type )->SizeX;
-      double size = 0.5 * MW->PMs->getXYMinimumSize(ipm);
+      double size = 0.5*MW->PMs->getType( PM.type )->SizeX;
       //io->setTextWidth(40);
 
       float sig = ( vector ? vector->at(ipm) : 0 );
@@ -1396,7 +1396,7 @@ void OutputWindow::on_pbShowAverageOverAll_clicked()
     updateSignalLabels(MaxSignal);
     addPMitems(&sums, MaxSignal, 0); //add icons with PMs to the scene
     if (ui->cbShowPMsignals->isChecked())
-      addTextItems(&sums, MaxSignal, 0); //add icons with signal text to the scene
+      addTextitems(&sums, MaxSignal, 0); //add icons with signal text to the scene
     updateSignalScale();
 }
 
@@ -2216,8 +2216,8 @@ void OutputWindow::on_trwEventView_customContextMenuRequested(const QPoint &pos)
     if (!pr) return;
 
     QMenu Menu;
-    QAction * showPosition = nullptr;  if (st) showPosition = Menu.addAction("Show position");
-    QAction * centerA       = nullptr; if (st) centerA = Menu.addAction("Center view at this position");
+    QAction * showPosition;
+    if (st) showPosition = Menu.addAction("Show position");
     Menu.addSeparator();
     QAction * showELDD = Menu.addAction("Show energy linear deposition density");
     QAction* selectedItem = Menu.exec(ui->trwEventView->mapToGlobal(pos));
@@ -2240,12 +2240,6 @@ void OutputWindow::on_trwEventView_customContextMenuRequested(const QPoint &pos)
         double pos[3];
         for (int i=0; i<3; i++) pos[i] = st->Position[i];
         MW->GeometryWindow->ShowPoint(pos, true);
-    }
-    else if (selectedItem == centerA)
-    {
-        double pos[3];
-        for (int i=0; i<3; i++) pos[i] = st->Position[i];
-        MW->GeometryWindow->CenterView(pos);
     }
 }
 

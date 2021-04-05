@@ -17,7 +17,7 @@ public:
     double getZ() const {return R[2];}
 
     ~ANodeRecord(); //deletes linked node
-
+    
     // prevent creation on the stack and copy/move
 private:
     ANodeRecord(double x, double y, double z, double time = 0, int numPhot = -1, ANodeRecord * rec = nullptr);

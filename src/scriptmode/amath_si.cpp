@@ -179,7 +179,6 @@ QVariantList AMath_SI::fit1D(QVariantList array, QString tformula, QVariantList 
     TFormula * f = new TFormula("", tformula.toLocal8Bit().data());
     if (!f || !f->IsValid())
     {
-        delete f;
         abort("Cannot create TFormula");
         return res;
     }
@@ -193,7 +192,6 @@ QVariantList AMath_SI::fit1D(QVariantList array, QString tformula, QVariantList 
     {
         if (startParValues.size() != numPars)
         {
-            delete f;
             abort("Mismatch in the number of parameters for provided initial values");
             return res;
         }
@@ -202,7 +200,6 @@ QVariantList AMath_SI::fit1D(QVariantList array, QString tformula, QVariantList 
             double v = startParValues[i].toDouble(&ok1);
             if (!ok1)
             {
-                delete f;
                 abort("Format error in range");
                 return res;
             }
@@ -220,7 +217,6 @@ QVariantList AMath_SI::fit1D(QVariantList array, QString tformula, QVariantList 
     {
         if (range.size() != 2)
         {
-            delete f;
             abort("Range should contain start and stop values");
             return res;
         }
@@ -228,7 +224,6 @@ QVariantList AMath_SI::fit1D(QVariantList array, QString tformula, QVariantList 
         to   = range[1].toDouble(&ok2);
         if (!ok1 || !ok2)
         {
-            delete f;
             abort("Format error in range");
             return res;
         }
@@ -241,7 +236,6 @@ QVariantList AMath_SI::fit1D(QVariantList array, QString tformula, QVariantList 
     //qDebug() << "Data size:"<< arSize;
     if (arSize == 0)
     {
-        delete f;
         abort("Array is empty!");
         return res;
     }
@@ -254,7 +248,6 @@ QVariantList AMath_SI::fit1D(QVariantList array, QString tformula, QVariantList 
         QVariantList el = array[i].toList();
         if (el.size() != 2)
         {
-            delete f;
             abort("array argument must contain arrays of [x,val]!");
             return res;
         }
@@ -263,7 +256,6 @@ QVariantList AMath_SI::fit1D(QVariantList array, QString tformula, QVariantList 
         yy << el[1].toDouble(&ok2);
         if (!ok1 || !ok2)
         {
-            delete f;
             abort("Format error in data");
             return res;
         }
@@ -288,8 +280,6 @@ QVariantList AMath_SI::fit1D(QVariantList array, QString tformula, QVariantList 
 
     if ((int)fr->NTotalParameters() != numPars)
     {
-        delete f1;
-        delete f;
         abort("Bad number of parameters in fit result");
         return res;
     }
@@ -309,7 +299,5 @@ QVariantList AMath_SI::fit1D(QVariantList array, QString tformula, QVariantList 
         for (int i=0; i<numPars; i++) res << fr->Value(i);
     }
 
-    delete f1;
-    delete f;
     return res;
 }

@@ -1,3 +1,4 @@
+//ANTS2
 #include "reconstructionwindow.h"
 #include "ui_reconstructionwindow.h"
 #include "mainwindow.h"
@@ -46,6 +47,7 @@
 #include "neuralnetworkswindow.h"
 #endif
 
+//Qt
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QVBoxLayout>
@@ -56,6 +58,7 @@
 #include <QMenu>
 #include <QInputDialog>
 
+//Root
 #include "TMath.h"
 #include "TGeoManager.h"
 #include "TVirtualGeoTrack.h"
@@ -78,17 +81,19 @@
 
 ReconstructionWindow::~ReconstructionWindow()
 {
+  if (vo) delete vo;
+  vo = 0;
   if (dialog)
-  {
+    {
       disconnect(vo, SIGNAL(PMselectionChanged(QVector<int>)), this, SLOT(onSelectionChange(QVector<int>)));
-      delete dialog; dialog = nullptr;
-  }
-  delete vo; vo = nullptr;
+      delete dialog;
+      dialog = 0;
+    }
 
   delete ui;
-  delete CorrCutLine;
-  delete CorrCutEllipse;
-  delete CorrCutPolygon;
+  if (CorrCutLine) delete CorrCutLine;
+  if (CorrCutEllipse) delete CorrCutEllipse;
+  if (CorrCutPolygon) delete CorrCutPolygon;
 
   for (int i=0; i<CorrelationFilters.size(); i++)
       delete CorrelationFilters[i];
@@ -96,47 +101,54 @@ ReconstructionWindow::~ReconstructionWindow()
   delete tmpCorrFilter;
 
   if (MW->GainWindow)
-  {
+    {
       //qDebug()<<"  -<Deleting gain evaluation window";
       MW->GainWindow->hide();
-      delete MW->GainWindow->parent(); MW->GainWindow = nullptr;
+      delete MW->GainWindow->parent();     
+      MW->GainWindow = 0;
       //qDebug() << "  --<Deleted";
-  }
+    }
   //qDebug() << " -<Destructor of Reconstruction window finished";
 }
 
-void ReconstructionWindow::writeToJson(QJsonObject & json)
+void ReconstructionWindow::writeToJson(QJsonObject &json) //fVerbose - saving as config including LRFs, gui info and info on all algorithms
 {
-  updateReconSettings();
-  updateFilterSettings();
+  ReconstructionWindow::updateReconSettings();
+  ReconstructionWindow::updateFilterSettings();
 
   QJsonObject js = MW->Config->JSON["ReconstructionConfig"].toObject();
 
+  //ReconstructionWindow::writePMrelatedInfoToJson(js);
   MW->Detector->PMgroups->writeSensorGroupsToJson(js);
 
   QJsonObject jsLRF;
   MW->lrfwindow->writeToJson(jsLRF);  //LRF make settings
   js["LRFmakeJson"] = jsLRF;
 
+  //QJsonObject js1;
+  //js1["ReconstructionConfig"] = js;
+  //SaveJsonToFile(js, "ReconstructionConfig.json");
+
   writeLrfModuleSelectionToJson(js);
 
   //old module LRFs
   if (Detector->LRFs->isAllLRFsDefined(true))
-  {
+    {
       QJsonObject LRFjson;
       Detector->LRFs->saveActiveLRFs_v2(LRFjson);
       js["ActiveLRF"] = LRFjson;
-  }
-  else if (js.contains("ActiveLRF")) js.remove("ActiveLRF");
-
+    }
+  else
+    if (js.contains("ActiveLRF")) js.remove("ActiveLRF");
   //new module LRFs
   if (Detector->LRFs->isAllLRFsDefined(false))
-  {
+    {
       QJsonObject LRFjson;
       Detector->LRFs->saveActiveLRFs_v3(LRFjson);
       js["ActiveLRFv3"] = LRFjson;
-  }
-  else if (js.contains("ActiveLRFv3")) js.remove("ActiveLRFv3");
+    }
+  else
+    if (js.contains("ActiveLRFv3")) js.remove("ActiveLRFv3");
 
   json["ReconstructionConfig"] = js;
 }
@@ -204,9 +216,9 @@ void ReconstructionWindow::UpdateStatusAllEvents()
 
 void ReconstructionWindow::InitWindow()
 {  
-  on_pbUpdateFilters_clicked();
-  on_pbUpdateGainsIndication_clicked();
-  on_pbCorrUpdateTMP_clicked(); //update correlation filter designer
+  ReconstructionWindow::on_pbUpdateFilters_clicked();
+  ReconstructionWindow::on_pbUpdateGainsIndication_clicked();
+  ReconstructionWindow::on_pbCorrUpdateTMP_clicked(); //update correlation filter designer
   tmpCorrFilter->Active = true;
   CorrelationFilterStructure* NewFilter = new CorrelationFilterStructure(tmpCorrFilter);
   NewFilter->Active = true;

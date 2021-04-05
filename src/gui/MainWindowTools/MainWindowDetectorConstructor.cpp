@@ -17,7 +17,7 @@
 #include "aslablistwidget.h"
 #include "ageoobject.h"
 #include "ageotype.h"
-#include "ageotree.h"
+#include "ageotreewidget.h"
 #include "localscriptinterfaces.h"
 #include "aconfiguration.h"
 #include "ajavascriptmanager.h"
