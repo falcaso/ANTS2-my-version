@@ -21,7 +21,7 @@ ants2_docker {
     CONFIG += ants2_fann
     CONFIG += ants2_RootServer
     CONFIG += ants2_Python
-    CONFIG += ants2_NCrystal
+    #CONFIG += ants2_NCrystal
 }
 
 #---CERN ROOT---
