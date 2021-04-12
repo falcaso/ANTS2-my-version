@@ -28,7 +28,7 @@ ants2_docker {
 linux-g++ || unix {
      INCLUDEPATH += $$system(root-config --incdir)
      #INCLUDEPATH += $$system(/usr/local/root/bin/root-config --incdir)
-     LIBS += $$system(/usr/local/root/bin/root-config --libs) -lGeom -lGeomPainter -lGeomBuilder -lMinuit2 -lSpectrum -ltbb
+     LIBS += $$system(root-config --libs) -lGeom -lGeomPainter -lGeomBuilder -lMinuit2 -lSpectrum -ltbb
      ants2_RootServer {LIBS += -lRHTTP  -lXMLIO}
 }
 win32 {
