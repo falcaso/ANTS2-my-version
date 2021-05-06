@@ -463,7 +463,7 @@ void OutputWindow::RefreshData()
           Passives->calculateDynamicPassives(CurrentEvent, EventsDataHub->ReconstructionData.at(CurrentGroup).at(CurrentEvent));
     }
 
-  OutputWindow::RefreshPMhitsTable();
+  //OutputWindow::RefreshPMhitsTable();
   //qDebug()<<"table updated";
 
   //updating viz
