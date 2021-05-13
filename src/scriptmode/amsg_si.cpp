@@ -63,7 +63,7 @@ AScriptMessengerDialog *AMsg_SI::GetDialogWidget()
 
 void AMsg_SI::Append(const QString &text)
 {
-    emit requestAppend(text);
+    emit requestAppend(text); //comment this if you need to disable messenger script window
 }
 
 void AMsg_SI::Clear()

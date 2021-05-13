@@ -152,6 +152,8 @@ void OutputWindow::on_pbShowPMtime_clicked()
 
 void OutputWindow::RefreshPMhitsTable()
 {
+    return;
+
     bool fHaveData = !EventsDataHub->isEmpty();    
     int CurrentEvent = ui->sbEvent->value();
     if (fHaveData && CurrentEvent>EventsDataHub->Events.size()-1) fHaveData = false; //protection
@@ -463,7 +465,7 @@ void OutputWindow::RefreshData()
           Passives->calculateDynamicPassives(CurrentEvent, EventsDataHub->ReconstructionData.at(CurrentGroup).at(CurrentEvent));
     }
 
-  //OutputWindow::RefreshPMhitsTable();
+  OutputWindow::RefreshPMhitsTable();
   //qDebug()<<"table updated";
 
   //updating viz
