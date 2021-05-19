@@ -228,7 +228,9 @@ void ASim_SI::AddNodesAndSubnodes(QVariantList nodes) //  [ [ [xyztn], [xyztn], 
                     return;
                 }
             }
-
+            // start FN mod
+            if (SimulationManager->Nodes.capacity()!=1.e8) SimulationManager->Nodes.reserve(1.e8);
+            // end FN mod
             ANodeRecord * n = ANodeRecord::createS(x, y, z, time, numPhots);
             if (previousNode)
                 previousNode->addLinkedNode(n);
