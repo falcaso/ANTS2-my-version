@@ -133,8 +133,11 @@ int ASim_SI::CountNodes(bool onlyTop)
     return counter;
 }
 
-void ASim_SI::AddNode(double X, double Y, double Z, double Time, int numPhotons)
+void ASim_SI::AddNode(double X, double Y, double Z, double Time, int numPhotons, unsigned reserve)
 {
+
+    SimulationManager->Nodes.reserve(reserve); // FN @ 2021.05.20
+
     ANodeRecord * n = ANodeRecord::createS(X, Y, Z, Time, numPhotons);
     SimulationManager->Nodes.push_back(n);
 }
@@ -228,9 +231,7 @@ void ASim_SI::AddNodesAndSubnodes(QVariantList nodes) //  [ [ [xyztn], [xyztn], 
                     return;
                 }
             }
-            // start FN mod
-            if (SimulationManager->Nodes.capacity()!=1.e8) SimulationManager->Nodes.reserve(1.e8);
-            // end FN mod
+
             ANodeRecord * n = ANodeRecord::createS(x, y, z, time, numPhots);
             if (previousNode)
                 previousNode->addLinkedNode(n);

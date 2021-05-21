@@ -28,6 +28,7 @@ private:
     ANodeRecord(ANodeRecord &&) = delete;
     ANodeRecord & operator=(ANodeRecord &&) = delete;
 
+
 public:
     //double X;
     //double Y;
@@ -40,6 +41,7 @@ public:
 
 private:
     ANodeRecord * LinkedNode = nullptr;
+    ANodeRecord *FBack=nullptr; // FN @ 2021.05.20
 
 };
 #endif // ANODERECORD_H

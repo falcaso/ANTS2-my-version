@@ -47,11 +47,31 @@ ANodeRecord *ANodeRecord::createV(double *r, double time, int numPhot, ANodeReco
     return new ANodeRecord(r, time, numPhot, rec);
 }
 
+// #include <iostream> // test only
+
+// optimized FN @ 2021.05.20
 void ANodeRecord::addLinkedNode(ANodeRecord * node)
 {
-    ANodeRecord * n = this;
-    while (n->LinkedNode) n = n->LinkedNode;
-    n->LinkedNode = node;
+// original
+//    ANodeRecord * n = this;
+//    while (n->LinkedNode) n = n->LinkedNode;
+//    n->LinkedNode = node;
+
+// may be problematic if not starting from the front.
+// ANodeRecord * n = this;
+// if (FBack) n=FBack;
+// else while (n->LinkedNode) n = n->LinkedNode;
+
+ // more general, if we don't start from the front
+ ANodeRecord * n = FBack?FBack:this;
+ while (n->LinkedNode) n = n->LinkedNode;
+
+// // check
+// ANodeRecord * m = this;
+// while (m->LinkedNode) m = m->LinkedNode;
+// if (m!=n) std::cout << m << " " << n << " " << (m==n) << std::endl << std::flush;
+
+ FBack = n->LinkedNode = node;
 }
 
 int ANodeRecord::getNumberOfLinkedNodes() const

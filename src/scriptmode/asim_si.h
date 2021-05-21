@@ -31,7 +31,7 @@ public slots:
   void ClearNodes();
   int  CountNodes(bool onlyTop);
 
-  void AddNode(double X, double Y, double Z, double Time = 0, int numPhotons = -1);
+  void AddNode(double X, double Y, double Z, double Time = 0, int numPhotons = -1, unsigned reserve=0); // FN @ 2021.05.20
   void AddSubNode(double X, double Y, double Z, double Time = 0, int numPhotons = -1);
 
   void AddNodes(QVariantList nodes);
