@@ -40,6 +40,8 @@ public slots:
   QString str(double value, int precision);
   bool strIncludes(QString str, QString pattern);
 
+  QString evalPython(QString script);
+
   //time stamps
   QString GetTimeStamp();
   QString GetDateTimeStamp();

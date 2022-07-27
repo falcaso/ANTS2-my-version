@@ -687,3 +687,10 @@ void AJavaScriptManager::updateBlockCommentStatus(const QString & Line, bool & b
         }
     }
 }
+
+void MainWindow::evalPython()
+{
+    APythonScriptManager->Evaluate(const QString & Script);
+}
+
+

@@ -21,13 +21,13 @@ ants2_docker {
     CONFIG += ants2_fann
     CONFIG += ants2_RootServer
     CONFIG += ants2_Python
-    #CONFIG += ants2_NCrystal
+    CONFIG += ants2_NCrystal
 }
 
 #---CERN ROOT---
 linux-g++ || unix {
-     INCLUDEPATH += $$system(root-config --incdir)
-     LIBS += $$system(root-config --libs) -lGeom -lGeomPainter -lGeomBuilder -lMinuit2 -lSpectrum -ltbb
+     INCLUDEPATH += $$system(/usr/local/root/bin/root-config --incdir)
+     LIBS += $$system(/usr/local/root/bin/root-config --libs) -lGeom -lGeomPainter -lGeomBuilder -lMinuit2 -lSpectrum -ltbb
      ants2_RootServer {LIBS += -lRHTTP  -lXMLIO}
 }
 win32 {

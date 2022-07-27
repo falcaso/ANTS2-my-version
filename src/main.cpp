@@ -312,6 +312,43 @@ int main(int argc, char *argv[])
         SM.RegisterInterface(web, "web");
         AServer_SI* server = new AServer_SI(*Network.WebSocketServer, &EventsDataHub);
         SM.RegisterInterface(server, "server");
+
+        //---- python script manager --------------------------------------------------
+        APythonScriptManager PSM(Detector.RandGen);
+        PSM.RegisterCoreInterfaces();
+        AConfig_SI* conf = new AConfig_SI(&Config);
+        PSM.RegisterInterface(conf, "config");
+        AGeo_SI* geo = new AGeo_SI(&Detector);
+        PSM.RegisterInterface(geo, "geo");
+        AMini_Python_SI* mini = new AMini_Python_SI(&PSM);
+        PSM.RegisterInterface(mini, "mini");  //mini should be before sim to handle abort correctly
+        AEvents_SI* dat = new AEvents_SI(&Config, &EventsDataHub);
+        PSM.RegisterInterface(dat, "events");
+#ifdef SIM
+        ASim_SI* sim = new ASim_SI(&SimulationManager, &EventsDataHub, &Config, false);
+        QObject::connect(sim, SIGNAL(requestStopSimulation()), &SimulationManager, SLOT(StopSimulation()));
+        PSM.RegisterInterface(sim, "sim");
+#endif
+        //APTHistory_SI needed here?
+        ARec_SI* rec = new ARec_SI(&ReconstructionManager, &Config, &EventsDataHub, &TmpHub);
+        QObject::connect(rec, SIGNAL(RequestStopReconstruction()), &ReconstructionManager, SLOT(requestStop()));
+        PSM.RegisterInterface(rec, "rec");
+        ALrf_SI* lrf = new ALrf_SI(&Config, &EventsDataHub);
+        PSM.RegisterInterface(lrf, "lrf");
+        APms_SI* pmS = new APms_SI(&Config);
+        PSM.RegisterInterface(pmS, "pms");
+        AInterfaceToGraph* graph = new AInterfaceToGraph(&TmpHub);
+        PSM.RegisterInterface(graph, "graph");
+        AInterfaceToHist* hist = new AInterfaceToHist(&TmpHub);
+        PSM.RegisterInterface(hist, "hist");
+        ATree_SI* tree = new ATree_SI(&TmpHub);
+        PSM.RegisterInterface(tree, "tree");
+        //AMsg_SI needed here?
+        AWeb_SI* web = new AWeb_SI(&EventsDataHub);
+        PSM.RegisterInterface(web, "web");
+        APhoton_SI* photon = new APhoton_SI(&Config, &EventsDataHub, SimulationManager);
+        PSM.RegisterInterface(photon, "photon");
+
 #ifdef ANTS_FLANN
         AKnn_SI* knn = new AKnn_SI(ReconstructionManager.KNNmodule);
         SM.RegisterInterface(knn, "knn");
